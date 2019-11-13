@@ -4,7 +4,7 @@ This repo shows a proof of concept of survelliance script that uploads to AWS S3
 
 The code is based on PyImageSearch blog
 
-### Tech
+## Tech
 
 * [Python 3.7.0] - Must be installed
 
@@ -13,13 +13,13 @@ The code is based on PyImageSearch blog
 - Create virtual environment
 - Activate virtualenv
 - Run: pip install -r requirements
-- Create in root folder a "config.json" with the following params: 
+- Create inside root folder a "config.json" with the following params: 
 
 ```json
 {
-	"ACCESS_KEY_ID" : "key",
-	"ACCESS_SECRET_KEY" : "secret",
-	"BUCKET_NAME" : "bucket",
+	"ACCESS_KEY_ID" : "access_key_id",
+	"ACCESS_SECRET_KEY" : "access_secret_key",
+	"BUCKET_NAME" : "bucket_name",
 	"SOSAFE_AUTH_TOKEN": "token"
 }
 ```
@@ -49,7 +49,7 @@ The face regocnition model was trainned to identify 3 labels:
 - Barbara: Single face photos of Barbara
 - Unknow: Photos of different single face persons
 
-#### Disable Face Detection
+#### Activate Face Detection
 Currently the face detection and recognition is OFF
 
 To activate it just uncomment the following code:
@@ -64,7 +64,7 @@ and
 frecon.FaceRecognition(frame) # line 135
 ```
 
-### Code Sections: app.py
+## Code Sections: app.py
 
 - 1 Argument parsing
 - 2 Lists ini
@@ -74,15 +74,14 @@ frecon.FaceRecognition(frame) # line 135
 - 5.1 Detection
 - 5.2 Video Recording
 
-### Todos
+## Todos
 
  - Improve movement detection for camera use.
  - Improve face recognition models accuracy.
  - Try YOLO deeplearning framework for pedestrian recognition.
  - Separete logic into Client, Server and MicroServices.
  
-License
 ----
 
-MIT
+License MIT
 
