@@ -1,5 +1,4 @@
 
-from tempimage import TempImage
 from imutils.video import VideoStream
 from imutils.object_detection import non_max_suppression
 import argparse
@@ -15,6 +14,10 @@ import detection.pedestrian as ped
 import detection.basic as md
 import aws_thread as aws
 import detection.frecon as frecon
+
+import socket
+import pickle
+import struct
 
 # 1. Arguments Parser  ###################################################################################################
 
@@ -48,26 +51,51 @@ index_start = 0
 index_end = 0
 index_current = 0
 
+# 2. List ini ###################################################################################################
+
+clientsocket = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
+
+clientsocket.connect(('localhost', 8485))
+
+encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+
+def encodeFrame(frame):
+  result, frame = cv2.imencode('.jpg', frame, encode_param)
+  data = pickle.dumps(frame, 0)
+  size = len(data)
+
+#   print("{}: {}".format(img_counter, size))
+
+  s_data = struct.pack(">L", size) + data
+
+  return s_data
+ 
+def StreamVideo(frame):
+    print('stream video')
+    s_data = encodeFrame(frame)
+
+    clientsocket.sendall(s_data)
 # Function responsable of writing the video and interacting with the AWS Service
-def CaptureVideo(l, t):
+def CaptureVideo(frames, t):
     global cv2, vs
 
-    print(len(l))
-    
-    frame_width = int(vs.get(3))
-    frame_height = int(vs.get(4))
 
-    rand=str(uuid.uuid4())
+    # print(len(l))
     
-    path = '{}.mp4'.format(rand)
+    # frame_width = int(vs.get(3))
+    # frame_height = int(vs.get(4))
 
-    out = cv2.VideoWriter(path, cv2.VideoWriter_fourcc(*'mp4v'), 30, (frame_width, frame_height))
+    # rand=str(uuid.uuid4())
     
-    for f in l:
-        out.write(f)
+    # path = '{}.mp4'.format(rand)
+
+    # out = cv2.VideoWriter(path, cv2.VideoWriter_fourcc(*'mp4v'), 30, (frame_width, frame_height))
     
-    out.release()
-    aws.upload(path)
+    # for f in frames:
+        # out.write(f)
+    
+    # out.release()
+    # aws.upload(path)
 
 # 3. VIDEO VS STREAM ###################################################################################################
 
@@ -148,7 +176,6 @@ while True:
     
     tolerance = 7 # Tolerance to intermitent non pedestrian detections
 
-    print(len(ped_res_list))
     if index_current > 3:
         s = sum(ped_res_list[index_current-1:index_current-tolerance:-1])
         s2 = sum(ped_res_list[index_current:index_current-tolerance:-1])
@@ -166,6 +193,7 @@ while True:
             index_end += 1
             # print('{}: {} start({}) and end({}) sum = {} (1)'.format(index_current, ped_res, index_start, index_end, s))
         if ped_res == 1 and not (last_frames): # el de ahora es 1 y los de antes almenos 1 era 1 OCCUPIED
+            StreamVideo(frame)
             index_end += 1
             # print('{}: {} start({}) and end({}) sum = {} (2)'.format(index_current, ped_res, index_start, index_end, s))
         elif ped_res == 1 and (last_frames):
@@ -182,7 +210,7 @@ while True:
     
     cv2.imshow("Security Feed", frame)
 
-    key = cv2.waitKey(25) & 0xFF
+    key = cv2.waitKey(1) & 0xFF
 
     # if the `q` key is pressed, break from the lop
     if key == ord("q"):
