@@ -79,7 +79,6 @@ def StreamVideo(frame):
 def CaptureVideo(frames, t):
     global cv2, vs
 
-
     # print(len(l))
     
     # frame_width = int(vs.get(3))
@@ -190,6 +189,7 @@ while True:
             # print('{}: {} start({}) and end({}) sum = {} (0)'.format(index_current, ped_res, index_start, index_end, s))
             pass
         elif ped_res == 0 and not (last_frames): # el de ahora es 0 y los de antes almenos 1 era 1 OCCUPIED
+            StreamVideo(frame)
             index_end += 1
             # print('{}: {} start({}) and end({}) sum = {} (1)'.format(index_current, ped_res, index_start, index_end, s))
         if ped_res == 1 and not (last_frames): # el de ahora es 1 y los de antes almenos 1 era 1 OCCUPIED
