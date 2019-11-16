@@ -70,7 +70,10 @@ or
 python client.py -r 1 -s server_ip
 ```
 
-`Si se cierra el cliente o el servidor sera necesario cerrar ambos de manera forsoza. Se recomienda que para probar la subida del video a AWS S3 se deje de detectar un ser humano mientras la camara sigue encendida. Esto hara que el servidor de recepción deje de strimear`
+```diff
+- Si se cierra el cliente o el servidor sera necesario cerrar ambos de manera forsoza. Se recomienda que para probar la subida del video a AWS S3 se deje de detectar un ser humano mientras la camara sigue encendida. Esto hara que el servidor de recepción deje de strimear
+```
+
 
 ## Face Detection
 The face regocnition model was trainned to identify 3 labels:
