@@ -9,10 +9,11 @@ The code is based on PyImageSearch blog
 * [Python 3.7.0] - Must be installed
 
 ## Setup
-- Clone repo
+- Clone this repo
 - Create virtual environment
 - Activate virtualenv
 - Run: pip install -r requirements
+- Inside a different folder clone streaming receiver: https://github.com/jcardenaslie/zmq-receiver-streaming
 - Create inside root folder a "config.json" with the following params: 
 
 ```json
@@ -26,23 +27,48 @@ The code is based on PyImageSearch blog
 
 ## Considerations
 
-## Run
-Run the following code to open the camera:
+## Run Server
 
-```sh
-python app.py --detector detection/face_detection_model --embedding detection/openface_nn4.small2.v1.t7 --recognizer detection/output/recognizer.pickle --le .\detection\output\le.pickle
+- Run pip install -r requirements.txt
+- Run in cmd/powershell: ipconfig and find your LAN/Wifi ip address (Dirección IPv4)
+- Run python .\server.py -mW 2 -mH 1
+
 ```
-Run the following code to open a video:
+...
+Adaptador de LAN inalámbrica Wi-Fi:
+
+   Sufijo DNS específico para la conexión. . :
+   Vínculo: dirección IPv6 local. . . : fe80::511b:3827:d6c8:2228%7
+   Dirección IPv4. . . . . . . . . . . . . . : 192.168.0.21
+   Máscara de subred . . . . . . . . . . . . : 255.255.255.0
+   Puerta de enlace predeterminada . . . . . : 192.168.0.1
+ ...
+```
+## Run Client
+
+Run client detection on camera feed:
 
 ```sh
-python app.py --detector detection/face_detection_model --embedding detection/openface_nn4.small2.v1.t7 --recognizer detection/output/recognizer.pickle --le .\detection\output\le.pickle -v video_path
+python client.py -s server_ip
+```
+Run client detection on video feed:
+
+```sh
+python app.py -v video_path -s server_ip
 ```
 
 To run and record to AWS S3 put the "-r 1" argument, as shown below:
 
 ```sh
-python app.py --detector detection/face_detection_model --embedding detection/openface_nn4.small2.v1.t7 --recognizer detection/output/recognizer.pickle --le .\detection\output\le.pickle -v ..\petu_silvi.mp4 -r 1
+python client.py -v video_path -r 1 -s server_ip
 ```
+
+or
+
+```sh
+python client.py -r 1 -s server_ip
+```
+
 ## Face Detection
 The face regocnition model was trainned to identify 3 labels:
 - Joaquin: Single face photos of Joaquin
@@ -76,7 +102,6 @@ frecon.FaceRecognition(frame) # line 135
 
 ## Todos
 
- - Improve movement detection for camera use.
  - Improve face recognition models accuracy.
  - Try YOLO deeplearning framework for pedestrian recognition.
  - Separete logic into Client, Server and MicroServices.
