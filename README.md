@@ -28,7 +28,8 @@ The code is based on PyImageSearch blog
 ## Considerations
 
 ## Run Server
-
+- Create virtual environment
+- Activate virtualenv
 - Run pip install -r requirements.txt
 - Run in cmd/powershell: ipconfig and find your LAN/Wifi ip address (Dirección IPv4)
 - Run python .\server.py -mW 2 -mH 1
