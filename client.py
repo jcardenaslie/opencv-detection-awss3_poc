@@ -10,8 +10,6 @@ import time
 import cv2
 import uuid
 
-import detection.pedestrian as ped
-import detection.basic as md
 import aws_thread as aws
 import detection.frecon as frecon
 
@@ -26,11 +24,6 @@ import imagezmq.imagezmq as imagezmq
 
 ap = argparse.ArgumentParser()
 
-# Required Args
-# ap.add_argument("-fd", "--detector" 	help="path to OpenCV's deep learning face detector")
-# ap.add_argument("-m", "--embedding"     help="path to OpenCV's deep learning face embedding model")
-# ap.add_argument("-z", "--recognizer" 	help="path to model trained to recognize faces")
-# ap.add_argument("-l", "--le", required=True, help="path to label encoder")
 
 ap.add_argument("-s", "--server-ip", required=True,
                 help="ip address of the server to which the client will connect")
@@ -132,8 +125,7 @@ index_current = 0
 
 # 2. Simple Server Stream ###################################################################################################
 
-sender = imagezmq.ImageSender(connect_to="tcp://{}:5555".format(
-    args["server_ip"]))
+sender = imagezmq.ImageSender(connect_to="tcp://{}:5555".format(args["server_ip"]), REQ_REP = True)
 # 2. Simple Server Stream ###################################################################################################
 
 def CaptureVideo(frames, t):
