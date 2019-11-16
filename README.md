@@ -25,8 +25,6 @@ The code is based on PyImageSearch blog
 }
 ```
 
-## Considerations
-
 ## Run Server
 - Create virtual environment
 - Activate virtualenv
@@ -69,7 +67,7 @@ or
 ```sh
 python client.py -r 1 -s server_ip
 ```
-
+## IMPORTANT
 ```diff
 - Si se cierra el cliente o el servidor sera necesario cerrar ambos de manera forsoza. Se recomienda que para probar la subida del video a AWS S3 se deje de detectar un ser humano mientras la camara sigue encendida. Esto hara que el servidor de recepción deje de strimear
 ```
