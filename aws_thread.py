@@ -17,7 +17,7 @@ ACCESS_SECRET_KEY = conf['ACCESS_SECRET_KEY']
 BUCKET_NAME = conf['BUCKET_NAME']
 
 def upload(f_name):
-	
+	print('[INFO] Starting video upload thread')
 	t = threading.Thread(
 		target=threadUpload,
 		args=(f_name, )
@@ -26,6 +26,8 @@ def upload(f_name):
 	t.start()
 
 def threadUpload(f_name):
+	print('[INFO] S3 Video upload START')
+
 	path = f_name
 	data = open(path, 'rb')
 	
@@ -40,7 +42,7 @@ def threadUpload(f_name):
 	
 	link = 'https://s3-sa-east-1.amazonaws.com/sosafe.test/{}'.format(path)
 	
-	print('Done: {}'.format(link))
+	print('[INFO] S3 Video upload DONE : {}'.format(link))
 
 	data.close()
 

@@ -6,7 +6,7 @@ conf = json.load(open("config.json"))
 auth_token = conf['SOSAFE_AUTH_TOKEN']
 
 def sosafeReportsPost(message = 'Empty'):
-    
+    print('[INFO] Report SOSAFE START')
     if message is not 'Empty':
         message = "TEST @jcardenaslie {}".format(message)
     else :
@@ -35,6 +35,6 @@ def sosafeReportsPost(message = 'Empty'):
     # print(response.json())
 
     if r_json['success']:
-        print('{} POST success'.format(message))
+        print('[INFO] Report SOSAFE END :'.format(message))
     else:
         print("Error: {}".format(r_json))

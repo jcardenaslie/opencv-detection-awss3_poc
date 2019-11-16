@@ -13,23 +13,28 @@ embedder = None
 recognizer = None
 le = None
 
-def init(p_detector, p_embedding, p_recognizer, p_le):
+def init():
     # Face Detector and Face Recogniser  ###################################################################################################
-    global detector, embedder, recognizer, le
+	global detector, embedder, recognizer, le
 
-    print("[INFO] loading face detector...")
-    protoPath = os.path.sep.join([p_detector, "deploy.prototxt"])
-    modelPath = os.path.sep.join([p_detector, "res10_300x300_ssd_iter_140000.caffemodel"])
+	p_detector = 'detection/face_detection_model'
+	p_recognizer = 'detection/output/recognizer.pickle'
+	p_embedding = 'detection/face_recognition_model/openface_nn4.small2.v1.t7'
+	p_le = 'detection/output/le.pickle'
+
+	print("[INFO] loading face detector...")
+	protoPath = os.path.sep.join([p_detector, "deploy.prototxt"])
+	modelPath = os.path.sep.join([p_detector, "res10_300x300_ssd_iter_140000.caffemodel"])
     
-    detector = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
+	detector = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 
     # load our serialized face embedding model from disk
-    print("[INFO] loading face recognizer...")
-    embedder = cv2.dnn.readNetFromTorch(p_embedding)
+	print("[INFO] loading face recognizer...")
+	embedder = cv2.dnn.readNetFromTorch(p_embedding)
 
     # load the actual face recognition model along with the label encoder
-    recognizer = pickle.loads(open(p_recognizer, "rb").read())
-    le = pickle.loads(open(p_le, "rb").read())
+	recognizer = pickle.loads(open(p_recognizer, "rb").read())
+	le = pickle.loads(open(p_le, "rb").read())
 
 
 def FaceRecognition(frame):
@@ -86,6 +91,7 @@ def FaceRecognition(frame):
 			# associated probability
 			text = "{}: {:.2f}%".format(name, proba * 100)
 			y = startY - 10 if startY - 10 > 10 else startY + 10
+			
 			cv2.rectangle(frame, (startX, startY), (endX, endY),
 				(0, 0, 255), 2)
 			cv2.putText(frame, text, (startX, y),
