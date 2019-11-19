@@ -4,6 +4,10 @@ This repo shows a proof of concept of survelliance script that uploads to AWS S3
 
 The code is based on PyImageSearch blog
 
+## Documentación
+
+https://docs.google.com/document/d/1NP1HimHvH6e0ryCYIGnF_h5gzNzwPTq7I6hWNGo_EHo/edit?usp=sharing
+
 ## Tech
 
 * [Python 3.7.0] - Must be installed
